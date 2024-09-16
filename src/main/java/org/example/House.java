@@ -16,10 +16,12 @@ package main.java.org.example;
  * owners).
  */
 public class House{
-    String owner;
-    int value;
+    private String owner;
+    private int value;
 
     public House() {
+        this.owner ="";
+        this.value = 0;
     }
 
     public House(String owner, int value) {
@@ -29,7 +31,8 @@ public class House{
 
     // DEEP COPY of the current instance
     public House(House other){
-        other =deepCopy();
+        this.owner = new String(other.owner);
+        this.value = other.value;
     }
 
     public String getOwner() {
@@ -49,7 +52,7 @@ public class House{
     }
 
     public House deepCopy(){
-        return this;
+        return new House(this);
     }
 
     //7. Implement an equals override. It should return a value based on the “values” and not the
@@ -57,15 +60,20 @@ public class House{
     // * owners).
     @Override
     public boolean equals(Object obj){
-        if(obj == null){
+        if(obj == null){ // not null
             return false;
         }
-
-        if(!obj.equals(value)){
+        if(this.getClass() != obj.getClass()){ // not in same class
             return false;
         }
+        if(this == obj){ // it is self
+            return true;
+        }
 
-        return true;
+        House otherHouse = (House) obj; // casting to House type
+        // it is true if value and owners are equal to obj
+        return this.value == otherHouse.value && this.owner.equals(otherHouse.owner);
+
     }
 
 

@@ -19,27 +19,43 @@ import java.util.LinkedList;
  * of the current instance).
  */
 public class PriorityQueueList implements PriorityQueue{
-    LinkedList priorityQueueList = new LinkedList<House>();
+    private LinkedList<House> priorityQueueList;
+
 
     public PriorityQueueList() {
+        priorityQueueList = new LinkedList<>();
     }
 
     public PriorityQueueList(PriorityQueueList other) {
-        other = deepCopy();
+        this.priorityQueueList = other.priorityQueueList;
     }
 
     public PriorityQueueList deepCopy(){
-        return this;
+        return new PriorityQueueList(this);
     }
 
     @Override
     public void add(House a) {
-        priorityQueueList.add(a);
+        if(isEmpty()) {
+            priorityQueueList.add(a); // if it is empty, add into
+        }else {
+            // insert value into linked-list (from high to lower)
+            for(int i = 0;i<getLength();i++){
+                House h = priorityQueueList.get(i);
+                if(a.getValue() > h.getValue() ){
+                    priorityQueueList.add(i,a); // add item in current position
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     public House getMostExpensive() {
-        return null;
+        if(!isEmpty()) {
+            return priorityQueueList.removeFirst(); // if not a empty linked-list , remove first item
+        }
+        return null; // otherwise return null
     }
 
     @Override

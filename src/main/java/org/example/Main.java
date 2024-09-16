@@ -1,4 +1,8 @@
 package main.java.org.example;
+
+import java.io.*;
+import java.util.Scanner;
+
 /**
  * Assignment 1 – CSC 329 Data Structures and Algorithms II
  * Due: 9/17/2024 @ 9:25am
@@ -18,7 +22,47 @@ package main.java.org.example;
 
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args){
+        PriorityQueueList priorityQueueList = new PriorityQueueList();
+        String path = "src/houses.txt";
+        try (Scanner scnr = new Scanner(new File(path))){ // read the file
+
+            while(scnr.hasNextLine()){ // read all texts
+                House house = new House();
+
+                String owner = scnr.nextLine();
+                house.setOwner(owner); // string add to Owner
+
+                if(scnr.hasNextInt()){
+                    int value = scnr.nextInt();
+                    house.setValue(value);  // number add to value
+                }
+                if(scnr.hasNextLine()){
+                    scnr.nextLine(); // jump to next line
+                }
+
+                priorityQueueList.add(house);
+            }
+
+        }catch (FileNotFoundException e){
+            System.out.println("Not found the file in " + path);
+            e.printStackTrace();
+        }
+    /*
+        while(!priorityQueueList.isEmpty()) {
+            House h = priorityQueueList.getMostExpensive(); // get and remove fist item
+            System.out.println(h.getOwner() + " : " + h.getValue()); // print all thing
+
+        }
+
+     */
+
+        PriorityQueueList copylist = new PriorityQueueList(priorityQueueList);
+        while(!copylist.isEmpty()) {
+            House h = copylist.getMostExpensive(); // get and remove fist item
+            System.out.println(h.getOwner() + " : " + h.getValue()); // print all thing
+
+        }
 
     }
 }
